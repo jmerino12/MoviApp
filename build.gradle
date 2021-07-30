@@ -13,6 +13,7 @@ buildscript {
         gson_version = "2.8.6"
         convertGson_version ="2.9.0"
         logging_interceptor = "4.9.1"
+        glide_version = "4.12.0"
     }
     repositories {
         google()
