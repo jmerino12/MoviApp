@@ -1,6 +1,7 @@
 package com.jmb.moviapp.framework.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,13 +52,19 @@ class HomeFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> {
                     searching(true)
+                    retry(false)
+
                 }
                 is Resource.Success -> {
                     searching(false)
+                    retry(false)
+
                     adapter.setList(it.data)
                     adapter.submitList(it.data)
                 }
                 is Resource.Failure -> {
+                    retry(true)
+                    Log.e(tag, it.toString())
                     requireContext().toast(it.toString())
                     searching(false)
 
@@ -72,6 +79,13 @@ class HomeFragment : Fragment() {
         binding.fragmentProgressBar.root.visibility = View.VISIBLE
     } else {
         binding.fragmentProgressBar.root.visibility = View.GONE
+    }
+
+    private fun retry(show: Boolean) = if (show) {
+        binding.retry.visibility = View.VISIBLE
+        binding.retry.setOnClickListener { viewModel.getMovies(getString(R.string.apiKey)) }
+    } else {
+        binding.retry.visibility = View.GONE
     }
 
     fun onMovieClicked(movie: Movie) {
