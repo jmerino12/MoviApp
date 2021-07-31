@@ -1,13 +1,16 @@
-package com.jmb.moviapp
+package com.jmb.moviapp.framework.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.jmb.moviapp.R
 import com.jmb.moviapp.databinding.ContentMainBinding
 import com.jmb.moviapp.databinding.FragmentHomeBinding
+import com.jmb.moviapp.domain.Movie
 
 class HomeFragment : Fragment() {
 
@@ -17,6 +20,8 @@ class HomeFragment : Fragment() {
 
 
     private lateinit var adapter: MoviesAdapter
+
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +38,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getMovies(getString(R.string.apiKey))
+    }
+
     private fun setupRecyclerView() {
-        val moviesList = arrayListOf<Movie>(
-            Movie("Motarl Kombat"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game"),
-            Movie("Avenger End Game")
-        )
         content.rvMovies.adapter = adapter
-        adapter.setList(moviesList)
-        adapter.submitList(moviesList)
+        viewModel.movies.observe(viewLifecycleOwner) {
+            adapter.setList(it)
+            adapter.submitList(it)
+        }
+
     }
 
     fun onMovieClicked(movie: Movie) {

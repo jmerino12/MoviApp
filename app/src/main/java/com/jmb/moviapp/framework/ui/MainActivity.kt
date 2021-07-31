@@ -1,4 +1,4 @@
-package com.jmb.moviapp
+package com.jmb.moviapp.framework.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.jmb.moviapp
+package com.jmb.moviapp.framework.ui.common
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

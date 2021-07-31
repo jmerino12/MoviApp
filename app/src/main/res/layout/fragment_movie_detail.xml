@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MovieDetailFragment">
+    tools:context=".framework.ui.detail.MovieDetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -26,8 +26,8 @@
                 android:id="@+id/imgCover"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_bar_height"
-                android:scaleType="centerCrop"
-                android:src="@drawable/mortal_kombat" />
+                android:scaleType="fitXY"
+                tools:src="@drawable/mortal_kombat" />
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -62,6 +62,7 @@
                 android:textColor="#D84315" />
 
             <TextView
+                android:id="@+id/overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/common_padding_default"

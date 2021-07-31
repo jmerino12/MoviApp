@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="2dp">
 
-    <com.jmb.moviapp.AspectRatioImageView
+    <com.jmb.moviapp.framework.ui.common.AspectRatioImageView
         android:id="@+id/posterMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

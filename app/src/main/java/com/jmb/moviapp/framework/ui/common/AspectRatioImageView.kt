@@ -1,8 +1,9 @@
-package com.jmb.moviapp
+package com.jmb.moviapp.framework.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import com.jmb.moviapp.R
 
 class AspectRatioImageView @JvmOverloads constructor(
     context: Context,

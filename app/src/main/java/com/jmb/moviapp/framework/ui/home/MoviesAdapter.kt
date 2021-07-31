@@ -1,10 +1,13 @@
-package com.jmb.moviapp
+package com.jmb.moviapp.framework.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.jmb.moviapp.databinding.ItemMovieBinding
+import com.jmb.moviapp.domain.Movie
+import com.jmb.moviapp.framework.ui.common.BaseViewHolder
+import com.jmb.moviapp.loadUrl
 
 class MoviesAdapter(private val listener: (Movie) -> Unit) :
     ListAdapter<Movie, BaseViewHolder<*>>(MoviesDiffCallback()) {
@@ -17,7 +20,7 @@ class MoviesAdapter(private val listener: (Movie) -> Unit) :
 
     class MoviesDiffCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -53,7 +56,7 @@ class MoviesAdapter(private val listener: (Movie) -> Unit) :
         BaseViewHolder<Movie>(binding.root) {
         override fun bind(item: Movie, position: Int) {
             binding.posterMovie
-                .loadUrl("https://media.gettyimages.com/photos/captain-america-the-first-avenger-movie-poster-picture-id458467163?s=612x612")
+                .loadUrl("https://image.tmdb.org/t/p/w500/${item.posterPath}")
             binding.root.setOnClickListener { listener(item) }
         }
     }
