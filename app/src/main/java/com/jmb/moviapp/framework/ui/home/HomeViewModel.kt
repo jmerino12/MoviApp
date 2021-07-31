@@ -1,10 +1,9 @@
 package com.jmb.moviapp.framework.ui.home
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.jmb.moviapp.data.database.RoomDataSource
 import com.jmb.moviapp.data.database.getDataBase
 import com.jmb.moviapp.data.repositories.MovieRepository
@@ -32,6 +31,13 @@ class HomeViewModel(application: Application) : ViewModel() {
     private val _movies = MutableLiveData<Resource<List<Movie>>>()
     val movies: LiveData<Resource<List<Movie>>> get() = _movies
 
+    private val _firstFecth = MutableLiveData<Boolean>()
+    val firstFecth: LiveData<Boolean> get() = _firstFecth
+
+    init {
+        _firstFecth.value = false
+    }
+
     fun getMovies(apiKey: String) {
         uiScope.launch {
             _movies.value = Resource.Loading()
@@ -41,6 +47,18 @@ class HomeViewModel(application: Application) : ViewModel() {
                 _movies.value = Resource.Failure(e)
             }
         }
+    }
+
+    fun getMoviePaging(): LiveData<PagingData<Movie>> {
+        val newResult: LiveData<PagingData<Movie>> =
+            loadPopularMovies.invokePaging("4005b57c0bfee0310d6958d0c8683128")
+                .cachedIn(viewModelScope)
+        return newResult
+
+    }
+
+    fun isNavigate() {
+        _firstFecth.value = true
     }
 
     class Factory(private val application: Application) : ViewModelProvider.Factory {

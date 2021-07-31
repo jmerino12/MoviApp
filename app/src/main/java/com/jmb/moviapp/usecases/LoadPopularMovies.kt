@@ -8,4 +8,6 @@ class LoadPopularMovies(private val movieRepository: MovieRepository) {
     suspend fun invoke(apiKey: String): Resource<List<Movie>> =
         Resource.Success(movieRepository.getPopularMovies(apiKey))
 
+    fun invokePaging(apiKey: String) = movieRepository.getMovie()
+
 }

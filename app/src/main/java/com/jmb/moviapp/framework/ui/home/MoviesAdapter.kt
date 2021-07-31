@@ -2,31 +2,30 @@ package com.jmb.moviapp.framework.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.jmb.moviapp.databinding.ItemMovieBinding
 import com.jmb.moviapp.domain.Movie
 import com.jmb.moviapp.framework.ui.common.BaseViewHolder
 import com.jmb.moviapp.framework.ui.common.loadUrl
 
 class MoviesAdapter(private val listener: (Movie) -> Unit) :
-    ListAdapter<Movie, BaseViewHolder<*>>(MoviesDiffCallback()) {
+    PagingDataAdapter<Movie, BaseViewHolder<*>>(
+        MoviesDiffCallback
+    ) {
 
-    private lateinit var items: List<Movie>
+    companion object {
+        private val MoviesDiffCallback = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    fun setList(list: List<Movie>) {
-        items = list
-    }
-
-    class MoviesDiffCallback : DiffUtil.ItemCallback<Movie>() {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem == newItem
+            }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val viewBinding =
@@ -41,7 +40,7 @@ class MoviesAdapter(private val listener: (Movie) -> Unit) :
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         when (holder) {
             is MovieHolder -> {
-                holder.bind(items[position], position)
+                getItem(position)?.let { holder.bind(it, position) }
             }
             else -> {
                 throw IllegalStateException("ViewType no declarado ")

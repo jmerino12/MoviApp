@@ -1,19 +1,21 @@
 package com.jmb.moviapp.framework.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.jmb.moviapp.R
+import androidx.paging.LoadState
 import com.jmb.moviapp.databinding.ContentMainBinding
 import com.jmb.moviapp.databinding.FragmentHomeBinding
 import com.jmb.moviapp.domain.Movie
-import com.jmb.moviapp.framework.ui.common.Resource
-import com.jmb.moviapp.framework.ui.common.toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -47,58 +49,39 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         content = binding.content
-        setupRecyclerView()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMovies(getString(R.string.apiKey))
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         content.rvMovies.adapter = adapter
-        viewModel.movies.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Loading -> {
-                    searching(true)
-                    retry(false)
-
+        viewModel.getMoviePaging().observe(viewLifecycleOwner) { result ->
+            viewModel.firstFecth.observe(viewLifecycleOwner, {
+                if (!it) {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        adapter.submitData(result)
+                    }
                 }
-                is Resource.Success -> {
-                    searching(false)
-                    retry(false)
-
-                    adapter.setList(it.data)
-                    adapter.submitList(it.data)
-                }
-                is Resource.Failure -> {
-                    retry(true)
-                    Log.e(tag, it.toString())
-                    requireContext().toast(it.toString())
-                    searching(false)
-
-                }
-            }
+            })
 
         }
-
+        adapter.addLoadStateListener { loadState ->
+            // Only show the list if refresh succeeds.
+            binding.fragmentProgressBar.root.isVisible =
+                loadState.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh.
+            binding.fragmentProgressBar.root.isVisible =
+                loadState.source.refresh is LoadState.Loading
+        }
     }
 
-    private fun searching(show: Boolean) = if (show) {
-        binding.fragmentProgressBar.root.visibility = View.VISIBLE
-    } else {
-        binding.fragmentProgressBar.root.visibility = View.GONE
-    }
-
-    private fun retry(show: Boolean) = if (show) {
-        binding.retry.visibility = View.VISIBLE
-        binding.retry.setOnClickListener { viewModel.getMovies(getString(R.string.apiKey)) }
-    } else {
-        binding.retry.visibility = View.GONE
-    }
 
     fun onMovieClicked(movie: Movie) {
+        viewModel.isNavigate()
         findNavController().navigate(
             HomeFragmentDirections.actionHomeFragmentToMovieDetailFragment(
                 movie
@@ -106,9 +89,5 @@ class HomeFragment : Fragment() {
         )
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 }
