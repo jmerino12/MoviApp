@@ -1,8 +1,12 @@
 package com.jmb.moviapp.framework.ui.home
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.jmb.moviapp.data.database.RoomDataSource
+import com.jmb.moviapp.data.database.getDataBase
 import com.jmb.moviapp.data.repositories.MovieRepository
 import com.jmb.moviapp.domain.Movie
 import com.jmb.moviapp.framework.data.datasource.ServerMovieDataSource
@@ -14,13 +18,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel : ViewModel() {
-
+class HomeViewModel(application: Application) : ViewModel() {
+    private val database = getDataBase(application)
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     private val loadPopularMovies = LoadPopularMovies(
         MovieRepository(
-            ServerMovieDataSource()
+            ServerMovieDataSource(),
+            RoomDataSource(database)
         )
     )
 
@@ -38,5 +43,16 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    class Factory(private val application: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(application) as T
+            }
+            throw IllegalArgumentException("Unable to construct viewmodel -  error ")
+        }
+    }
+
 
 }
+

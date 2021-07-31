@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.jmb.moviapp.R
 import com.jmb.moviapp.databinding.ContentMainBinding
@@ -24,7 +24,17 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: MoviesAdapter
 
-    private val viewModel by viewModels<HomeViewModel>()
+    private val viewModel: HomeViewModel by lazy {
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onViewCreated()"
+        }
+        ViewModelProvider(
+            this,
+            HomeViewModel.Factory(activity.application)
+        ).get(HomeViewModel::class.java)
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
