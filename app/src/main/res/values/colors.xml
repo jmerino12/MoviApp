@@ -18,4 +18,7 @@
     <color name="color_on_surface">#000000</color>
     <color name="color_on_error">#FF0000</color>
 
+    <color name="colortest">#9c0000</color>
+
+
 </resources>

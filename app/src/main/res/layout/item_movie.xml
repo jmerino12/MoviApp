@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:padding="2dp">
 
     <com.jmb.moviapp.AspectRatioImageView
+        android:id="@+id/posterMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
