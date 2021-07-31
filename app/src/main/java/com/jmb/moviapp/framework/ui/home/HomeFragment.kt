@@ -11,6 +11,8 @@ import com.jmb.moviapp.R
 import com.jmb.moviapp.databinding.ContentMainBinding
 import com.jmb.moviapp.databinding.FragmentHomeBinding
 import com.jmb.moviapp.domain.Movie
+import com.jmb.moviapp.framework.ui.common.Resource
+import com.jmb.moviapp.framework.ui.common.toast
 
 class HomeFragment : Fragment() {
 
@@ -46,10 +48,30 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
         content.rvMovies.adapter = adapter
         viewModel.movies.observe(viewLifecycleOwner) {
-            adapter.setList(it)
-            adapter.submitList(it)
+            when (it) {
+                is Resource.Loading -> {
+                    searching(true)
+                }
+                is Resource.Success -> {
+                    searching(false)
+                    adapter.setList(it.data)
+                    adapter.submitList(it.data)
+                }
+                is Resource.Failure -> {
+                    requireContext().toast(it.toString())
+                    searching(false)
+
+                }
+            }
+
         }
 
+    }
+
+    private fun searching(show: Boolean) = if (show) {
+        binding.fragmentProgressBar.root.visibility = View.VISIBLE
+    } else {
+        binding.fragmentProgressBar.root.visibility = View.GONE
     }
 
     fun onMovieClicked(movie: Movie) {

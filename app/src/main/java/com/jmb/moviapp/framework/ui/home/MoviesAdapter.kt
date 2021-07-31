@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.jmb.moviapp.databinding.ItemMovieBinding
 import com.jmb.moviapp.domain.Movie
 import com.jmb.moviapp.framework.ui.common.BaseViewHolder
-import com.jmb.moviapp.loadUrl
+import com.jmb.moviapp.framework.ui.common.loadUrl
 
 class MoviesAdapter(private val listener: (Movie) -> Unit) :
     ListAdapter<Movie, BaseViewHolder<*>>(MoviesDiffCallback()) {

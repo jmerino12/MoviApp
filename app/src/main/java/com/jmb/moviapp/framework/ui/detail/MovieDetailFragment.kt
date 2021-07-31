@@ -12,7 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.jmb.moviapp.databinding.FragmentMovieDetailBinding
-import com.jmb.moviapp.loadUrl
+import com.jmb.moviapp.framework.ui.common.loadUrl
 
 class MovieDetailFragment : Fragment() {
     private var _binding: FragmentMovieDetailBinding? = null
