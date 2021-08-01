@@ -12,4 +12,11 @@ interface TheMovieDB {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): TheMovieDbResult
+
+    @GET("search/movie")
+    suspend fun searchMovie(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int,
+        @Query("query") string: String
+    ): TheMovieDbResult
 }

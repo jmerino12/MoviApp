@@ -25,7 +25,10 @@
 
         <item name="colorControlNormal">@color/color_secondary_variant</item>
         <!-- <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>-->
-
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="hintTextColor">@android:color/white</item>
     </style>
 
     <style name="action" parent="Widget.MaterialComponents.Toolbar.Primary">

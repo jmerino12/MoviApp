@@ -3,13 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jhonatan/.gradle/caches/transforms-3/79b2c83ff7e367618c586e86b0d8debd/transformed/appcompat-1.3.1/res/drawable/abc_ic_clear_material.xml" value="0.2703125" />
+        <entry key="..\:/Users/Jhonatan/.gradle/caches/transforms-3/79b2c83ff7e367618c586e86b0d8debd/transformed/appcompat-1.3.1/res/drawable/abc_ic_go_search_api_material.xml" value="0.2703125" />
+        <entry key="..\:/Users/Jhonatan/.gradle/caches/transforms-3/79b2c83ff7e367618c586e86b0d8debd/transformed/appcompat-1.3.1/res/drawable/abc_textfield_search_material.xml" value="0.2703125" />
+        <entry key="..\:/Users/Jhonatan/.gradle/caches/transforms-3/79b2c83ff7e367618c586e86b0d8debd/transformed/appcompat-1.3.1/res/layout/abc_search_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/drawable-anydpi/ic_search.xml" value="0.2703125" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/content_main.xml" value="0.25" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/fragment_movie_detail.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/fragment_search_movie.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/item_movie.xml" value="0.25" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/progress_bar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/layout/repos_load_state_footer_view_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jhonatan/AndroidStudioProjects/MoviApp/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

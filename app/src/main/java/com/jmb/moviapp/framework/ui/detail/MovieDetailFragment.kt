@@ -26,11 +26,10 @@ class MovieDetailFragment : Fragment() {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
         val navController = findNavController()
         val appbarconfi = AppBarConfiguration(navGraph = navController.graph)
-        binding.toolbar.setupWithNavController(navController, appbarconfi)
+        binding.mToolbar.setupWithNavController(navController, appbarconfi)
         configActionBar()
         return binding.root
     }
-
 
     private fun configActionBar() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout: AppBarLayout, verticalOffset: Int ->

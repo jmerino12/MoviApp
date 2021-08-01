@@ -1,14 +1,13 @@
 package com.jmb.moviapp.data.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
-import androidx.paging.liveData
+import androidx.lifecycle.LiveData
+import androidx.paging.*
 import com.bumptech.glide.load.HttpException
 import com.jmb.moviapp.App
 import com.jmb.moviapp.data.datasource.LocalDataSource
 import com.jmb.moviapp.data.datasource.RemoteDataSource
 import com.jmb.moviapp.domain.Movie
+import kotlinx.coroutines.Job
 import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
@@ -20,6 +19,9 @@ class MovieRepository(
 
     private lateinit var movies: List<Movie>
     private val myApp: App = App()
+
+    private var searchJob: Job? = null
+
     suspend fun getPopularMovies(apiKey: String): List<Movie> {
         if (localDataSource.isEmpty()) {
             val movies =
@@ -30,17 +32,19 @@ class MovieRepository(
     }
 
 
-    fun getMovie() = Pager(
-        config = PagingConfig(
-            pageSize = 1000,
-            enablePlaceholders = true,
-        ),
-        pagingSourceFactory = { MovieRepository(remoteDataSource, localDataSource) }
-    ).liveData
+    fun getMovie(): LiveData<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 1000,
+                enablePlaceholders = true,
+            ),
+            pagingSourceFactory = { MovieRepository(remoteDataSource, localDataSource) }
+        ).liveData
+
+    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val position = params.key ?: STARTING_PAGE_INDEX
-
         return try {
             if (myApp.isConnected()) {
                 movies = remoteDataSource.getPopularMoviesPaging(
@@ -63,5 +67,12 @@ class MovieRepository(
         }
     }
 
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
+
+    }
 }
 

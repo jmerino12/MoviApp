@@ -11,13 +11,16 @@ import com.jmb.moviapp.domain.Movie
 import com.jmb.moviapp.framework.data.datasource.ServerMovieDataSource
 import com.jmb.moviapp.framework.ui.common.Resource
 import com.jmb.moviapp.usecases.LoadPopularMovies
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class HomeViewModel(application: Application) : ViewModel() {
+    private val _movies = MutableLiveData<Resource<List<Movie>>>()
+    val movies: LiveData<Resource<List<Movie>>> get() = _movies
+
+    private val _firstFecth = MutableLiveData<Boolean>()
+    val firstFecth: LiveData<Boolean> get() = _firstFecth
+
     private val database = getDataBase(application)
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -27,12 +30,6 @@ class HomeViewModel(application: Application) : ViewModel() {
             RoomDataSource(database)
         )
     )
-
-    private val _movies = MutableLiveData<Resource<List<Movie>>>()
-    val movies: LiveData<Resource<List<Movie>>> get() = _movies
-
-    private val _firstFecth = MutableLiveData<Boolean>()
-    val firstFecth: LiveData<Boolean> get() = _firstFecth
 
     init {
         _firstFecth.value = false
@@ -50,15 +47,17 @@ class HomeViewModel(application: Application) : ViewModel() {
     }
 
     fun getMoviePaging(): LiveData<PagingData<Movie>> {
-        val newResult: LiveData<PagingData<Movie>> =
-            loadPopularMovies.invokePaging("4005b57c0bfee0310d6958d0c8683128")
-                .cachedIn(viewModelScope)
-        return newResult
-
+        return loadPopularMovies.invokePaging("4005b57c0bfee0310d6958d0c8683128")
+            .cachedIn(viewModelScope)
     }
 
     fun isNavigate() {
         _firstFecth.value = true
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
     }
 
     class Factory(private val application: Application) : ViewModelProvider.Factory {
