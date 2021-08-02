@@ -1,14 +1,14 @@
 package com.jmb.moviapp
 
 import android.app.Application
-import okio.IOException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
 
 
 class App : Application() {
 
-    @Throws(InterruptedException::class, IOException::class)
-    fun isConnected(): Boolean {
+    suspend fun isConnected(): Boolean = (Dispatchers.IO) {
         val command = "ping -c 1 google.com"
-        return Runtime.getRuntime().exec(command).waitFor() == 0
+        Runtime.getRuntime().exec(command).waitFor() == 0
     }
 }

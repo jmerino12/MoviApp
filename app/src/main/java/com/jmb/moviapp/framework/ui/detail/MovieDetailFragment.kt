@@ -1,6 +1,8 @@
 package com.jmb.moviapp.framework.ui.detail
 
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,14 @@ class MovieDetailFragment : Fragment() {
                 )
             )
             if (colorValue < 110) {
+                binding.mToolbar.navigationIcon?.colorFilter =
+                    PorterDuffColorFilter(
+                        Color.rgb(
+                            156,
+                            colorValue,
+                            colorValue
+                        ), PorterDuff.Mode.SRC_ATOP
+                    )
                 binding.toolbarLayout.setCollapsedTitleTextColor(
                     Color.rgb(
                         156,
